@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import './App.css';
+// import './App.css';
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
           Learn React
         </a>
       </header>
+      <p className="text-red-500">eeaa</p>
     </div>
   );
 }
