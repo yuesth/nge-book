@@ -25,5 +25,8 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('daisyui'),
+    require('@tailwindcss/typography'),
+  ],
 }
