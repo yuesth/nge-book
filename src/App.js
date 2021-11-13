@@ -1,20 +1,41 @@
-import React, { Suspense, lazy, useEffect } from 'react'
-import { BrowserRouter, Redirect, Routes, Route } from 'react-router-dom'
-// import Login from "./pages/login"
+import React, { Suspense, lazy, useEffect, useContext } from 'react'
+import { BrowserRouter, Navigate, Routes, Route, useLocation, Outlet } from 'react-router-dom'
+import { BookContextProvider, useBookContext } from './provider/index'
 const LazyLogin = lazy(() => import('./pages/login'))
+const LazyHome = lazy(() => import('./pages/home'))
 
 
-function App() {
+function App({ contract, currentUser, nearConfig, wallet }) {
+  const value = { contract, nearConfig, currentUser, wallet };
   return (
-    <BrowserRouter>
-      <Suspense fallback={<></>}>
-        <Routes>
-          <Route path="/login" element={<LazyLogin />}></Route>
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
-    // <div className="bg-red-500 w-full min-h-screen">Wi</div>
+    <BookContextProvider value={value}>
+      <BrowserRouter>
+        <Suspense fallback={<></>}>
+          <Routes>
+            <Route path="/login" element={<LazyLogin />}></Route>
+            <Route path="/" element={<PrivateRoute />}>
+              <Route path="/" element={<LazyHome />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </BookContextProvider>
   );
+}
+
+const PrivateRoute = ({ path, element }) => {
+  let { currentUser } = useBookContext();
+  let location = useLocation();
+  if (!currentUser) {
+    return (
+      <Navigate to="/login" state={{ from: location }} />
+    )
+  }
+  else {
+    return (
+      <Outlet />
+    )
+  }
 }
 
 export default App;
