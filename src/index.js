@@ -47,10 +47,18 @@ async function initContract() {
   return { contract, currentUser, nearConfig, walletConnection };
 }
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
-reportWebVitals();
+window.nearInitPromise = initContract().then(({ contract, currentUser, nearConfig, walletConnection }) => {
+  ReactDOM.render(
+    // <React.StrictMode>
+    <App
+      contract={contract}
+      currentUser={currentUser}
+      nearConfig={nearConfig}
+      wallet={walletConnection}
+    />,
+    // {/* </React.StrictMode>, */ }
+    document.getElementById('root')
+  );
+})
+
+// reportWebVitals();
