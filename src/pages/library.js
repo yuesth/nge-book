@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../components/layout/layout'
-import { Spin, Modal, Empty, Select, Input, notification } from 'antd'
+import { Modal, Empty, Select, Input, notification, Button } from 'antd'
 import Card from '../components/card'
 import { H1, Label } from '../components/typography'
-import { ShopIconSvg } from '../components/icons'
+import { ShopIconSvg, TrashIconSvg } from '../components/icons'
+import Tabs from '../components/tabs'
 import { useBookContext } from '../provider'
+import { useNavigate } from 'react-router'
+import Sticky from 'wil-react-sticky'
 
-const Home = () => {
-    const { contract, nearConfig, currentUser, wallet } = useBookContext()
-    const [rawdata, setrawdata] = useState({
-        status: "",
-        copyright: "",
-        num_results: null,
-        results: []
-    })
+const Library = () => {
+    const { contract, currentUser } = useBookContext()
+    const navigate = useNavigate()
     const [books, setbooks] = useState([])
     const [books2, setbooks2] = useState([])
     const [praloading, setpraloading] = useState(true)
     const [loadingmodal, setloadingmodal] = useState(false)
     const [selectedbook, setselectedbook] = useState({
+        book_id: null,
         book_image: "",
         title: "",
         description: "",
@@ -27,6 +26,11 @@ const Home = () => {
         status: ""
     })
     const [modal, setmodal] = useState(false)
+    const [skip, setskip] = useState(0);
+    const [limit, setlimit] = useState(10);
+    const [status, setstatus] = useState("All")
+    const [modaldelete, setmodaldelete] = useState(false)
+    const [loadingmodaldelete, setloadingmodaldelete] = useState(false)
 
     const onSeachBook = (e) => {
         if (e.target.value === "") {
@@ -45,60 +49,67 @@ const Home = () => {
         setselectedbook({ ...selectedbook, status: value })
     }
 
-    const handleAddBook = () => {
+    const onChangeStatus = (currentStatus) => {
+        setstatus(currentStatus)
+        if (currentStatus === "All") {
+            setbooks(books2)
+        }
+        else {
+            var temp = books2.filter((docfil, idxfil) => {
+                return docfil.status === currentStatus
+            })
+            setbooks(temp)
+        }
+    }
+
+    const handleUpdateBook = () => {
         setloadingmodal(true)
-        console.log(`{"book":${JSON.stringify({
-            title: selectedbook.title,
-            description: selectedbook.description,
-            status: selectedbook.status,
-            image: selectedbook.book_image
-        })}}`)
         contract
-            // .add_book(`{"book":${JSON.stringify({
-            //     title: selectedbook.title,
-            //     description: selectedbook.description,
-            //     status: selectedbook.status,
-            //     image: selectedbook.book_image
-            // })}`)
-            .add_book({
-                book: {
-                    title: selectedbook.title,
-                    description: selectedbook.description,
-                    status: selectedbook.status,
-                    image: selectedbook.book_image
-                }
+            .update_book({
+                book_id: selectedbook.book_id,
+                status: selectedbook.status
             })
             .then(() => {
-                setselectedbook({
-                    book_image: "",
-                    title: "",
-                    description: "",
-                    author: "",
-                    publisher: "",
-                    status: ""
-                })
                 setloadingmodal(false)
                 setmodal(false)
                 notification['success']({
-                    message: "Book added to library!",
+                    message: "Book updated!",
                     duration: 2
                 })
+                window.location.href = `/library`
             }
             )
             .catch((error) => {
-                console.log(error)
-                setselectedbook({
-                    book_image: "",
-                    title: "",
-                    description: "",
-                    author: "",
-                    publisher: "",
-                    status: ""
-                })
                 setloadingmodal(false)
                 setmodal(false)
                 notification['error']({
-                    message: "Failed added Book to library!",
+                    message: "Failed update book!",
+                    duration: 2
+                })
+            });
+    }
+
+    const handleDeleteBook = () => {
+        setloadingmodaldelete(true)
+        contract
+            .delete_book({
+                book_id: selectedbook.book_id,
+            })
+            .then(() => {
+                setloadingmodaldelete(false)
+                setmodaldelete(false)
+                notification['success']({
+                    message: "Book deleted!",
+                    duration: 2
+                })
+                window.location.href = `/library`
+            }
+            )
+            .catch((error) => {
+                setloadingmodaldelete(false)
+                setmodaldelete(false)
+                notification['error']({
+                    message: "Failed delete book!",
                     duration: 2
                 })
             });
@@ -106,36 +117,29 @@ const Home = () => {
 
     useEffect(() => {
         setpraloading(true)
-        fetch(`https://api.nytimes.com/svc/books/v3/lists/overview.json?api-key=${process.env.REACT_APP_NYT_KEY}`, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        contract.get_books({
+            account_id: currentUser.account_id,
+            skip,
+            limit
         })
-            .then(res => res.json())
-            .then(res2 => {
-                setrawdata(res2)
-                var newBooks = []
-                var count = 1
-                res2.results.lists.map((doc, idx) => {
-                    doc.books.forEach((doc2) => {
-                        newBooks.push({
-                            ...doc2,
-                            id: count
-                        })
-                        count += 1
-                    })
-                    count += 1
-                })
-                setbooks(newBooks)
-                setbooks2(newBooks)
+            .then((res) => {
+                const resmap = res.map(doc => ({
+                    ...doc,
+                    book_image: doc.image
+                }))
+                setbooks([...books, ...resmap]);
+                setbooks2([...books, ...resmap]);
                 setpraloading(false)
             })
-    }, [])
+    }, [skip, limit])
     return (
-        <Layout page={"Home"} praloading={praloading}>
-            <div className="flex flex-col px-2 md:px-5 py-2 md:py-5">
-                <div className="flex flex-col items-center mb-2 md:mb-5">
-                    <h1 className=" text-xl md:text-4xl font-bold mb-2">Best Seller Books</h1>
+        <Layout page={"Library"} praloading={praloading}>
+            <div className="flex flex-col px-2 md:px-5 py-2 md:py-5 relative" id="wrapper">
+                <Sticky containerSelectorFocus="#wrapper">
+                    <Tabs status={status} onChangeStatus={onChangeStatus}></Tabs>
+                </Sticky>
+                <div className="flex flex-col items-center mb-2 md:mb-5 mt-10 md:mt-0">
+                    <h1 className=" text-xl md:text-4xl font-bold mb-2">Your Daily Books</h1>
                 </div>
                 <div className="flex flex-col items-center mb-2 md:mb-5">
                     <Input placeholder="Search book title" style={{ width: `70%` }} onChange={onSeachBook} allowClear></Input>
@@ -165,12 +169,6 @@ const Home = () => {
                 visible={modal}
                 onCancel={() => {
                     setmodal(false);
-                    console.log(JSON.stringify({
-                        title: selectedbook.title,
-                        description: selectedbook.description,
-                        status: selectedbook.status,
-                        image: selectedbook.book_image
-                    }))
                     setselectedbook({
                         book_image: "",
                         title: "",
@@ -182,7 +180,7 @@ const Home = () => {
                 }}
                 okText="Save"
                 cancelText="Cancel"
-                onOk={handleAddBook}
+                onOk={handleUpdateBook}
                 okButtonProps={{ loading: loadingmodal }}
                 width={720}
             >
@@ -215,7 +213,8 @@ const Home = () => {
                             <a href={`${selectedbook.amazon_product_url}`} target="_blank" className="text-primary100 hover:text-primary75">{selectedbook.amazon_product_url}</a>
                         </div>
                     </div>
-                    <div className="flex mb-5 w-full">
+                    <div className="flex flex-col mb-5 w-full">
+                        <Label>Status</Label>
                         <Select style={{ width: `60%` }} value={selectedbook.status === "" ? null : selectedbook.status} placeholder="Choose step" onChange={onSelectStatus}>
                             <Select.Option value={"List"}>
                                 <p className="text-green-600">Reading List</p>
@@ -228,10 +227,19 @@ const Home = () => {
                             </Select.Option>
                         </Select>
                     </div>
+                    <div className="flex justify-end items-center">
+                        <Button type="danger" onClick={() => { setmodal(false); setmodaldelete(true) }}>
+                            <TrashIconSvg />
+                            Delete Book from library
+                        </Button>
+                    </div>
                 </div>
+            </Modal>
+            <Modal title="Delete Confirmation" visible={modaldelete} okButtonProps={{ loading: loadingmodaldelete }} onOk={handleDeleteBook} onCancel={() => { setmodaldelete(false) }}>
+                Are you sure want to  delete this book from the library?
             </Modal>
         </Layout>
     )
 }
 
-export default Home
+export default Library

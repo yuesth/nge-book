@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Routes, Route, useLocation, Outlet } from 'rea
 import { BookContextProvider, useBookContext } from './provider/index'
 const LazyLogin = lazy(() => import('./pages/login'))
 const LazyHome = lazy(() => import('./pages/home'))
+const LazyLibrary = lazy(() => import('./pages/library'))
 
 
 function App({ contract, currentUser, nearConfig, wallet }) {
@@ -13,6 +14,9 @@ function App({ contract, currentUser, nearConfig, wallet }) {
         <Suspense fallback={<></>}>
           <Routes>
             <Route path="/login" element={<LazyLogin />}></Route>
+            <Route path="/" element={<PrivateRoute />}>
+              <Route path="/library" element={<LazyLibrary />}></Route>
+            </Route>
             <Route path="/" element={<PrivateRoute />}>
               <Route path="/" element={<LazyHome />} />
             </Route>

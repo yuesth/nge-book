@@ -40,7 +40,7 @@ async function initContract() {
       changeMethods: ['add_book', 'update_book', 'delete_book'],
       // Sender is the account ID to initialize transactions.
       // getAccountId() will return empty string if user is still unauthorized
-      sender: walletConnection.getAccountId(),
+      sender: walletConnection.account(),
     }
   );
 

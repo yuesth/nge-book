@@ -12,6 +12,10 @@ code {
     monospace;
 } */
 
+.btn-active{
+  background-color: #1890ff;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
