@@ -100,7 +100,7 @@ const Home = () => {
 
     useEffect(() => {
         setpraloading(true)
-        fetch(`https://api.nytimes.com/svc/books/v3/lists/overview.json?api-key=${process.env.REACT_APP_NYT_KEY}`, {
+        fetch(`https://api.nytimes.com/svc/books/v3/lists/overview.json?api-key=SbTbZ6EQbYAnXInQb0tJbxPXCZTApz2t`, {
             headers: {
                 'Content-Type': 'application/json'
             }
