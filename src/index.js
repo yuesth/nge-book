@@ -5,7 +5,7 @@ import 'antd/dist/antd.css';
 import App from './App';
 import * as nearAPI from 'near-api-js';
 import getConfig from './config'
-import reportWebVitals from './reportWebVitals';
+// import reportWebVitals from './reportWebVitals';
 
 async function initContract() {
   const nearConfig = getConfig(process.env.NODE_ENV || 'development');

@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useContext } from 'react'
+import React, { Suspense, lazy } from 'react'
 import { BrowserRouter, Navigate, Routes, Route, useLocation, Outlet } from 'react-router-dom'
 import { BookContextProvider, useBookContext } from './provider/index'
 const LazyLogin = lazy(() => import('./pages/login'))

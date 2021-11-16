@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../components/layout/layout'
-import { Spin, Modal, Empty, Select, Input, notification } from 'antd'
+import { Modal, Empty, Select, Input, notification } from 'antd'
 import Card from '../components/card'
 import { H1, Label } from '../components/typography'
 import { ShopIconSvg } from '../components/icons'
 import { useBookContext } from '../provider'
 
 const Home = () => {
-    const { contract, nearConfig, currentUser, wallet } = useBookContext()
-    const [rawdata, setrawdata] = useState({
-        status: "",
-        copyright: "",
-        num_results: null,
-        results: []
-    })
+    const { contract } = useBookContext()
     const [books, setbooks] = useState([])
     const [books2, setbooks2] = useState([])
     const [praloading, setpraloading] = useState(true)
@@ -113,7 +107,6 @@ const Home = () => {
         })
             .then(res => res.json())
             .then(res2 => {
-                setrawdata(res2)
                 var newBooks = []
                 var count = 1
                 res2.results.lists.map((doc, idx) => {
@@ -212,7 +205,7 @@ const Home = () => {
                             <div className="mr-1">
                                 <ShopIconSvg />
                             </div>
-                            <a href={`${selectedbook.amazon_product_url}`} target="_blank" className="text-primary100 hover:text-primary75">{selectedbook.amazon_product_url}</a>
+                            <a href={`${selectedbook.amazon_product_url}`} target="_blank" rel="noreferrer" className="text-primary100 hover:text-primary75">{selectedbook.amazon_product_url}</a>
                         </div>
                     </div>
                     <div className="flex mb-5 w-full">

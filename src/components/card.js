@@ -1,11 +1,11 @@
-import { Button, Modal } from 'antd'
+import { Button } from 'antd'
 import React from 'react'
 
 const Card = ({ book, setselectedbook, setmodal }) => {
     return (
         <div className="card text-center shadow-2xl mx-2 my-2">
             <figure className="md:px-10 pt-5 md:pt-10 h-64">
-                <img src={book.book_image} className="rounded-xl object-contain max-h-48 md:h-64" />
+                <img src={book.book_image} alt="" className="rounded-xl object-contain max-h-48 md:h-64" />
             </figure>
             <div className="card-body">
                 <div className=" h-52">

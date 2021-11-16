@@ -6,12 +6,10 @@ import { H1, Label } from '../components/typography'
 import { ShopIconSvg, TrashIconSvg } from '../components/icons'
 import Tabs from '../components/tabs'
 import { useBookContext } from '../provider'
-import { useNavigate } from 'react-router'
 import Sticky from 'wil-react-sticky'
 
 const Library = () => {
     const { contract, currentUser } = useBookContext()
-    const navigate = useNavigate()
     const [books, setbooks] = useState([])
     const [books2, setbooks2] = useState([])
     const [praloading, setpraloading] = useState(true)
@@ -210,7 +208,7 @@ const Library = () => {
                             <div className="mr-1">
                                 <ShopIconSvg />
                             </div>
-                            <a href={`${selectedbook.amazon_product_url}`} target="_blank" className="text-primary100 hover:text-primary75">{selectedbook.amazon_product_url}</a>
+                            <a href={`${selectedbook.amazon_product_url}`} rel="noreferrer" target="_blank" className="text-primary100 hover:text-primary75">{selectedbook.amazon_product_url}</a>
                         </div>
                     </div>
                     <div className="flex flex-col mb-5 w-full">
