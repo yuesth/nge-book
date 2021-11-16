@@ -8,7 +8,7 @@ import getConfig from './config'
 // import reportWebVitals from './reportWebVitals';
 
 async function initContract() {
-  const nearConfig = getConfig(process.env.NODE_ENV || 'development');
+  const nearConfig = getConfig('development');
   // Initializing connection to the NEAR TestNet
   const near = await nearAPI.connect({
     deps: {
