@@ -14,7 +14,7 @@ function App({ contract, currentUser, nearConfig, wallet }) {
         <Suspense fallback={<></>}>
           <Routes>
             <Route path="/login" element={<LazyLogin />}></Route>
-            <Route path="/" element={<PrivateRoute />}>
+            <Route path="/library" element={<PrivateRoute />}>
               <Route path="/library" element={<LazyLibrary />}></Route>
             </Route>
             <Route path="/" element={<PrivateRoute />}>
