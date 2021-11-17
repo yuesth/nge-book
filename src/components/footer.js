@@ -11,7 +11,7 @@ const Footer = () => {
                     <br />Love to win hate to lose
                 </p>
             </div>
-            {/* <div>
+            <div>
                 <span className="footer-title">Social</span>
                 <div className="grid grid-flow-col gap-4">
                     <a href="#">
@@ -30,7 +30,7 @@ const Footer = () => {
                         </svg>
                     </a>
                 </div>
-            </div> */}
+            </div>
         </footer>
 
     )

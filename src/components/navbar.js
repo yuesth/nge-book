@@ -8,7 +8,7 @@ const Navbar = ({ page }) => {
     let navigate = useNavigate();
     const handleLogout = () => {
         wallet.signOut();
-        window.location.href = `/login`
+        window.location.replace(window.location.origin + window.location.pathname);
     }
     return (
         <div className="navbar shadow-lg bg-neutral text-neutral-content">

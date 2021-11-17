@@ -182,7 +182,7 @@ const Library = () => {
                 okButtonProps={{ loading: loadingmodal }}
                 width={720}
             >
-                <div className="flex flex-col mb-5 px-5">
+                <div className="flex flex-col mb-5 pl-5">
                     <div className="max-h-96 w-full mb-5 flex justify-center">
                         <img src={selectedbook.book_image} alt="" className="object-fit max-h-96 rounded" />
                     </div>

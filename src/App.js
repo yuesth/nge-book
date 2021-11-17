@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react'
-import { BrowserRouter, Navigate, Routes, Route, useLocation, Outlet } from 'react-router-dom'
+import { HashRouter, Navigate, Routes, Route, useLocation, Outlet } from 'react-router-dom'
 import { BookContextProvider, useBookContext } from './provider/index'
 const LazyLogin = lazy(() => import('./pages/login'))
 const LazyHome = lazy(() => import('./pages/home'))
@@ -10,7 +10,7 @@ function App({ contract, currentUser, nearConfig, wallet }) {
   const value = { contract, nearConfig, currentUser, wallet };
   return (
     <BookContextProvider value={value}>
-      <BrowserRouter>
+      <HashRouter basename={window.location.pathname || ''}>
         <Suspense fallback={<></>}>
           <Routes>
             <Route path="/login" element={<LazyLogin />}></Route>
@@ -22,7 +22,7 @@ function App({ contract, currentUser, nearConfig, wallet }) {
             </Route>
           </Routes>
         </Suspense>
-      </BrowserRouter>
+      </HashRouter>
     </BookContextProvider>
   );
 }

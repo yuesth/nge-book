@@ -23,7 +23,7 @@ const Login = () => {
         <Layout praloading={praloading}>
             <div className="flex">
                 <div className="w-0 md:w-6/12 flex justify-center items-center px-0 md:px-10">
-                    <img src="/landing1.png" alt="" />
+                    <img src="https://res.cloudinary.com/aql-peduli/image/upload/v1637135134/landing1_pkyi8b.png" alt="" />
                 </div>
                 <div className="w-full md:w-6/12 flex flex-col justify-center h-screen px-5 md:px-10">
                     <div className="prose prose-sm lg:prose-lg mb-8">
@@ -35,7 +35,7 @@ const Login = () => {
                         </h1>
                     </div>
                     <div className="flex justify-center">
-                        <div className="btn btn-primary btn-lg" onClick={handleLogin}>LOGIN WITH NEAR WALLET <img src="/near.png" alt="" className="object-contain w-5 h-5 ml-2" /></div>
+                        <div className="btn btn-primary btn-lg" onClick={handleLogin}>LOGIN WITH NEAR WALLET <img src="https://res.cloudinary.com/aql-peduli/image/upload/v1637135144/near_sjdqfa.png" alt="" className="object-contain w-5 h-5 ml-2" /></div>
                     </div>
                 </div>
             </div>
