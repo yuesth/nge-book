@@ -74,7 +74,7 @@ const Library = () => {
                     message: "Book updated!",
                     duration: 2
                 })
-                window.location.href = `/library`
+                window.location.reload(false)
             }
             )
             .catch((error) => {
@@ -100,7 +100,7 @@ const Library = () => {
                     message: "Book deleted!",
                     duration: 2
                 })
-                window.location.href = `/library`
+                window.location.reload(false)
             }
             )
             .catch((error) => {

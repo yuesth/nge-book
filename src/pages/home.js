@@ -41,12 +41,6 @@ const Home = () => {
 
     const handleAddBook = () => {
         setloadingmodal(true)
-        console.log(`{"book":${JSON.stringify({
-            title: selectedbook.title,
-            description: selectedbook.description,
-            status: selectedbook.status,
-            image: selectedbook.book_image
-        })}}`)
         contract
             // .add_book(`{"book":${JSON.stringify({
             //     title: selectedbook.title,
@@ -80,7 +74,6 @@ const Home = () => {
             }
             )
             .catch((error) => {
-                console.log(error)
                 setselectedbook({
                     book_image: "",
                     title: "",
@@ -158,12 +151,6 @@ const Home = () => {
                 visible={modal}
                 onCancel={() => {
                     setmodal(false);
-                    console.log(JSON.stringify({
-                        title: selectedbook.title,
-                        description: selectedbook.description,
-                        status: selectedbook.status,
-                        image: selectedbook.book_image
-                    }))
                     setselectedbook({
                         book_image: "",
                         title: "",

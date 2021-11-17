@@ -8,7 +8,6 @@ const Login = () => {
     const [praloading, setpraloading] = useState(false)
 
     const handleLogin = () => {
-        console.log("eea")
         setpraloading(true)
         wallet.requestSignIn(nearConfig.contractName, 'ngeBook');
     }

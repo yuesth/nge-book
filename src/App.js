@@ -10,7 +10,7 @@ function App({ contract, currentUser, nearConfig, wallet }) {
   const value = { contract, nearConfig, currentUser, wallet };
   return (
     <BookContextProvider value={value}>
-      <HashRouter basename={window.location.pathname || ''}>
+      <HashRouter>
         <Suspense fallback={<></>}>
           <Routes>
             <Route path="/login" element={<LazyLogin />}></Route>
